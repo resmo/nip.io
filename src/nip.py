@@ -1,4 +1,18 @@
 #!/usr/bin/python
+#
+# Copyright 2017 René Moser <mail@renemoser.net>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 import sys
 import re
@@ -47,7 +61,7 @@ class DynamicBackend:
         if not os.path.exists(fname):
             log('%s does not exist' % fname)
             sys.exit(1)
-    
+
         fp = open(fname)
         config = ConfigParser.ConfigParser()
         config.readfp(fp)
@@ -58,7 +72,7 @@ class DynamicBackend:
         self.domain = config.get('main', 'domain')
         self.ip_address = config.get('main', 'ipaddress')
         self.ttl = config.get('main', 'ttl')
-    
+
         for entry in config.items('nameservers'):
             self.name_servers[entry[0]] = entry[1]
 
@@ -109,8 +123,13 @@ class DynamicBackend:
 
     def handle_subdomains(self, qname):
         subdomain = qname[0:qname.find(self.domain)-1]
+        # Split foo.bar.10-0-0-1 in parts
+        subdomain_parts = subdomain.split('.')
 
-        subparts = subdomain.split('.')
+        # Take the last part as this is the IP separated with dashes
+        ip_dashes = subdomain_parts[-1]
+        subparts = ip_dashes.split('-')
+
         if len(subparts) < 4:
             if DEBUG: log('subparts less than 4')
             self.handle_self(qname)
@@ -152,8 +171,6 @@ class DynamicBackend:
 
 
 if __name__ == '__main__':
-
     backend = DynamicBackend()
     backend.configure()
     backend.run()
-
