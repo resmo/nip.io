@@ -1,6 +1,6 @@
 [main]
 # main domain
-domain=lcl.io
+domain=example.com
 
 # default ttl
 ttl=432000
@@ -14,14 +14,13 @@ ipaddress=127.0.0.1
 # serial number
 id=1
 # Hostmaster email address
-hostmaster=hostmaster@lcl.io
+hostmaster=hostmaster@example.com
 # Name server
-ns=ns1.lcl.io
+ns=ns1.example.com
 
 
 # nameservers
 [nameservers]
-ns1.lcl.io=127.0.0.1
-ns2.lcl.io=127.0.0.1
-
+ns1.example.com=127.0.0.1
+ns2.example.com=127.0.0.1
 
