@@ -1,4 +1,4 @@
-FROM bitnami/minideb:jessie
+FROM bitnami/minideb:latest
 RUN install_packages python pdns-server pdns-backend-pipe
 ADD src/backend.conf.example /usr/local/bin/backend.conf
 ADD src/nip.py /usr/local/bin/nip
