@@ -143,6 +143,11 @@ class DynamicBackend:
         if DEBUG:
             log('ip: %s' % ipaddress)
         for part in ipaddress:
+            if re.match('^\d{1,3}$', part) is None:
+                if DEBUG:
+                    log('%s is not a number' % part)
+                self.handle_self(qname)
+                return
             parti = int(part)
             if parti < 0 or parti > 255:
                 if DEBUG:
