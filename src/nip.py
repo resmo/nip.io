@@ -131,20 +131,15 @@ class DynamicBackend:
 
     def handle_subdomains(self, qname):
         subdomain = qname[0:qname.find(self.domain) - 1]
-        # Split foo.bar.10-0-0-1 in parts
-        subdomain_parts = subdomain.split('.')
+        match = re.findall('^(?:.+\.)?(\d{1,3}([-.])\d{1,3}\2\d{1,3}\2\d{1,3})$', subdomain)
 
-        # Take the last part as this is the IP separated with dashes
-        ip_dashes = subdomain_parts[-1]
-        subparts = ip_dashes.split('-')
-
-        if len(subparts) < 4:
+        if not match:
             if DEBUG:
-                log('subparts less than 4')
+                log('%s is invalid format' % subdomain)
             self.handle_self(qname)
             return
 
-        ipaddress = subparts[-4:]
+        ipaddress = re.split('[-.]', match[0])
         if DEBUG:
             log('ip: %s' % ipaddress)
         for part in ipaddress:
