@@ -1,0 +1,15 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: {owner}/{repo}@ref
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag nip:$(date +%s)
