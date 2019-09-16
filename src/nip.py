@@ -62,6 +62,7 @@ class DynamicBackend:
         self.ip_address = ''
         self.ttl = ''
         self.name_servers = {}
+        self.additional_cnames = {}
 
     def configure(self):
         fname = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'backend.conf')
@@ -81,7 +82,19 @@ class DynamicBackend:
         self.ttl = config.get('main', 'ttl')
 
         for entry in config.items('nameservers'):
-            self.name_servers[entry[0]] = entry[1]
+            if not entry[0].endswith(self.domain):
+                name = entry[0] + '.' + self.domain
+            else:
+                name = entry[0]
+            self.name_servers[name] = entry[1]
+
+        for entry in config.items('additional_cnames') or []:
+            if not entry[0].endswith(self.domain):
+                name = entry[0] + '.' + self.domain
+            else:
+                name = entry[0]
+            self.additional_cnames[name] = entry[1]
+            log('add static CNAME: %s = %s' % (entry[0], entry[1]))
 
         log('Name servers: %s' % self.name_servers)
         log('ID: %s' % self.id)
@@ -112,11 +125,13 @@ class DynamicBackend:
             qname = cmd[1].lower()
             qtype = cmd[3]
 
-            if (qtype == 'A' or qtype == 'ANY') and qname.endswith(self.domain):
+            if qtype in ('CNAME', 'A', 'ANY') and qname.endswith(self.domain):
                 if qname == self.domain:
                     self.handle_self(self.domain)
                 elif qname in self.name_servers:
                     self.handle_nameservers(qname)
+                elif qname in self.additional_cnames:
+                    self.handle_additional_cnames(qname)
                 else:
                     self.handle_subdomains(qname)
             elif qtype == 'SOA' and qname.endswith(self.domain):
@@ -159,7 +174,16 @@ class DynamicBackend:
         self.write_name_servers(qname)
         write('END')
 
+    def handle_additional_cnames(self, qname):
+        if DEBUG:
+            log('Found CNAME: %s' % qname)
+        cname=self.additional_cnames[qname]
+        write('DATA', qname, 'IN', 'CNAME', self.ttl, self.id, cname)
+        write('END')
+
     def handle_nameservers(self, qname):
+        if DEBUG:
+            log('Found name server: %s' % qname)
         ip = self.name_servers[qname]
         write('DATA', qname, 'IN', 'A', self.ttl, self.id, ip)
         write('END')
