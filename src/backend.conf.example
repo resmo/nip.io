@@ -24,3 +24,6 @@ ns=ns1.example.com
 ns1.example.com=127.0.0.1
 ns2.example.com=127.0.0.1
 
+[additional_cnames]
+_acme-challenge=xyz.auth.example.com.
+www=business.example.com
