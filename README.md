@@ -2,7 +2,7 @@
 
 This is a fork of http://nip.io with some neat changes.
 
-## ABOUT
+## About
 
 Dead simple wildcard DNS for any IP Address
 
@@ -20,41 +20,44 @@ As well as Dot `.`:
 10.0.0.1.nip.io maps to 10.0.0.1
 app.10.0.0.1.nip.io maps to 10.0.0.1
 customer1.app.10.0.0.1.nip.io maps to 10.0.0.1
-NIP.IO maps <anything>.<IP Address with dashes or dots>.nip.io to the corresponding <IP Address>, even 127-0-0-1.nip.io maps to 127.0.0.1
 ~~~
 
-See https://github.com/resmo/nip.io/blob/master/src/backend.conf.example for an example config
+See https://github.com/resmo/nip.io/blob/master/src/backend.conf.example for an example config-
 
 **Hint**: See the static CNAME `_acme-challenge=xyz.auth.example.com.` in the example, use it with https://github.com/joohoi/acme-dns for free Let's Encrypt TLS certs.
 
-## INSTALL
+## Install
 
-### As docker container
+### As Docker Container
 
-Build the image:
-~~~
+#### Build the Image:
+
+```bash
 docker build -t nip.io .
-~~~
+```
 
-Run the container:
-~~~
-docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp  -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io nip.io
-~~~
+#### Run the Container:
 
-See the logs:
-~~~
+```bash
+docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io nip.io
+```
+
+#### See the Logs:
+
+```bash
+
 docker logs -f nip.io
-~~~
+```
 
-Test it:
-~~~
+#### Test it
+```bash
 dig 1-2-3-4.example.com +short @localhost
 1.2.3.4
 
 dig foo.1-2-3-4.example.com +short @localhost
 1.2.3.4
-~~~
+```
 
-## LICENSE
+## License
 
 Apache2 http://www.apache.org/licenses/LICENSE-2.0
