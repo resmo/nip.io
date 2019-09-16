@@ -4,12 +4,11 @@ on:
   push:
     branches:
     - master
-
 jobs:
   build:
     runs-on: ubuntu-latest
- 
+
     steps:
-    - uses: {owner}/{repo}@ref
+    - uses: actions/checkout@master
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag nip:$(date +%s)
