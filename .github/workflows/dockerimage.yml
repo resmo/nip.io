@@ -4,11 +4,10 @@ on:
   push:
     branches:
     - master
-    - ci
 jobs:
   build:
     runs-on: ubuntu-latest
- 
+
     steps:
     - uses: actions/checkout@master
     - name: Build the Docker image
