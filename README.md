@@ -6,19 +6,26 @@ This is a fork of http://nip.io with some neat changes.
 
 Dead simple wildcard DNS for any IP Address
 
-NIP.IO allows you to map any IP Address in the following DNS wildcard entries:
+nip.io allows you to map any IP Address in the following DNS wildcard entries:
 
+It works with Dashes `-`, perfect for wildcard TLS certs:
 ~~~
 10-0-0-1.nip.io maps to 10.0.0.1
-10.0.0.1.nip.io maps to 10.0.0.1
 app.10-0-0-1.nip.io maps to 10.0.0.1
-app.10.0.0.1.nip.io maps to 10.0.0.1
 customer1.app.10-0-0-1.nip.io maps to 10.0.0.1
-customer1.app.10.0.0.1.nip.io maps to 10.0.0.1
-otherapp.10-0-0-1.nip.io maps to 10.0.0.1
+~~~
 
+As well as Dot `.`:
+~~~
+10.0.0.1.nip.io maps to 10.0.0.1
+app.10.0.0.1.nip.io maps to 10.0.0.1
+customer1.app.10.0.0.1.nip.io maps to 10.0.0.1
 NIP.IO maps <anything>.<IP Address with dashes or dots>.nip.io to the corresponding <IP Address>, even 127-0-0-1.nip.io maps to 127.0.0.1
 ~~~
+
+See https://github.com/resmo/nip.io/blob/master/src/backend.conf.example for an example config
+
+**Hint**: See the static CNAME `_acme-challenge=xyz.auth.example.com.` in the example, use it with https://github.com/joohoi/acme-dns for free Let's Encrypt TLS certs.
 
 ## INSTALL
 
@@ -31,7 +38,7 @@ docker build -t nip.io .
 
 Run the container:
 ~~~
-docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp --name nip.io nip.io
+docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp  -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io nip.io
 ~~~
 
 See the logs:
