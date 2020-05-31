@@ -146,7 +146,7 @@ class DynamicBackend:
 
     def handle_subdomains(self, qname):
         subdomain = qname[0:qname.find(self.domain) - 1]
-        match = re.findall('^(?:.+\.)?(\d{1,3}[-.]\d{1,3}[-.]\d{1,3}[-.]\d{1,3})$', subdomain)
+        match = re.findall('^(?:.+[-.])?(\d{1,3}[-.]\d{1,3}[-.]\d{1,3}[-.]\d{1,3})$', subdomain)
 
         if not match:
             if DEBUG:
