@@ -33,7 +33,7 @@ See https://github.com/resmo/nip.io/blob/master/src/backend.conf.example for an 
 #### Run the Container from ghcr:
 
 ```bash
-docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io  ghcr.io/resmo/nip-io
+docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io  ghcr.io/resmo/nip-io:master
 ```
 
 #### Or Build the Image:
