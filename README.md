@@ -30,11 +30,10 @@ See https://github.com/resmo/nip.io/blob/master/src/backend.conf.example for an 
 
 ### As Docker Container
 
-
-#### Run the Container from DcokerHub:
+#### Run the Container from ghcr:
 
 ```bash
-docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io resmo/nip-io
+docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io  ghcr.io/resmo/nip-io
 ```
 
 #### Or Build the Image:
@@ -51,6 +50,7 @@ docker logs -f nip.io
 ```
 
 #### Test it
+
 ```bash
 dig 1-2-3-4.example.com +short @localhost
 1.2.3.4
