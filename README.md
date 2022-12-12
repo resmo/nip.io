@@ -32,8 +32,17 @@ See https://github.com/resmo/nip.io/blob/master/src/backend.conf.example for an 
 
 #### Run the Container from ghcr:
 
+Quick test run with built-in config for example.com:
+
 ```bash
-docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io  ghcr.io/resmo/nip-io:master
+docker run -d -p 0.0.0.0:5353:53/tcp -p 0.0.0.0:5353:53/udp --name nip.io ghcr.io/resmo/nip-io:latest
+dig @localhost -p5353 10-1-2-3.example.com
+```
+
+Provide your own config as volume:
+
+```bash
+docker run -d -p 0.0.0.0:53:53/tcp -p 0.0.0.0:53:53/udp -v /data/backend.conf:/usr/local/bin/backend.conf --name nip.io ghcr.io/resmo/nip-io:latest
 ```
 
 #### Or Build the Image:
