@@ -17,7 +17,10 @@ id=1
 hostmaster=hostmaster@example.com
 # Name server
 ns=ns1.example.com
-
+refresh=10800
+retry=3600
+expire=604800
+minimum=3600
 
 # nameservers
 [nameservers]
