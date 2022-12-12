@@ -76,7 +76,11 @@ class DynamicBackend:
         fp.close()
 
         self.id = config.get('soa', 'id')
-        self.soa = '%s %s %s' % (config.get('soa', 'ns'), config.get('soa', 'hostmaster'), self.id)
+        self.refresh = config.get('soa', 'refresh')
+        self.retry = config.get('soa', 'retry')
+        self.expire = config.get('soa', 'expire')
+        self.minimum = config.get('soa', 'minimum')
+        self.soa = '%s %s %s %s %s %s %s' % (config.get('soa', 'ns'), config.get('soa', 'hostmaster'), self.id, self.refresh, self.retry, self.expire, self.minimum)
         self.domain = config.get('main', 'domain')
         self.ip_address = config.get('main', 'ipaddress')
         self.ttl = config.get('main', 'ttl')
